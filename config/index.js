@@ -10,7 +10,12 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: { // https://webpack.js.org/configuration/dev-server/#devserverproxy
+      '/api': {
+        target: 'http://localhost:8081',
+        pathRewrite: {'^/api' : ''}
+      }
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST

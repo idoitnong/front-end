@@ -1,102 +1,13 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, user-scalable=no" />
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="https://unpkg.com/axios@latest/dist/axios.min.js"></script>
-    <script
-      src="https://unpkg.com/twemoji@latest/dist/twemoji.min.js"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://unpkg.com/moment@2.29.4/min/moment-with-locales.min.js"
-      crossorigin="anonymous"
-    ></script>
-    <title>하우스 온도</title>
-    <style>
-      #app {
-        font-family: Arial, Helvetica, sans-serif;
-        text-align: center;
-        margin-top: 60px;
-      }
-
-      img.emoji {
-        height: 1em;
-        width: 1em;
-        margin: 0 0.05em 0 0.1em;
-        vertical-align: -0.1em;
-      }
-    </style>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + Vue + TS</title>
   </head>
-
   <body>
-    <div id="app">
-      <div>
-        <h3>{{ now }}</h3>
-      </div>
-      <div v-if="message">{{ message }}</div>
-      <div v-if="inTemp">
-        <h2>실내온도</h2>
-        <h1 style="color: #f44336" @click="showModal = true">
-          🌡️ {{ inTemp }} ℃
-        </h1>
-        <h5>{{ createdAt }}.{{ timeDiff }}.</h5>
-        <button v-on:click="fetchData">새로고침</button>
-      </div>
-    </div>
-
-    <script>
-      const { createApp, ref, onMounted, nextTick } = Vue;
-
-      createApp({
-        data() {
-          return {
-            now: null,
-            message: null,
-            inTemp: null,
-            timeDiff: null,
-            createdAt: null,
-          };
-        },
-        methods: {
-          async fetchData() {
-            this.now = moment().format("LTS");
-            this.inTemp = null;
-            this.message = "데이터를 불러오는 중입니다. 잠시만 기다려주세요.";
-
-            const response = await axios.get("https://iot.podos.kr/api/inTemp");
-            this.message = null;
-            this.inTemp = (
-              Math.floor(response.data[0].sensor_value * 10) / 10
-            ).toFixed(1);
-
-            this.createdAt = moment(response.data[0].created_at).format(
-              "YYYY-MM-DD hh:mm:ss"
-            );
-
-            // DOM업데이트 기다리기
-            await nextTick(() => {
-              twemoji.parse(document.body, {
-                folder: "svg",
-                ext: ".svg",
-              });
-            });
-          },
-        },
-        watch: {
-          now: (t) => {
-            this.timeDiff = t;
-          },
-        },
-        mounted() {
-          setInterval(() => {
-            this.now = moment().format("LTS");
-          }, 1000);
-          moment.locale("ko");
-          this.fetchData();
-        },
-      }).mount("#app");
-    </script>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

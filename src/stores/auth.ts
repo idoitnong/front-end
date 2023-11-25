@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 interface AuthState {
   token: string | null;
@@ -25,7 +25,7 @@ export const useAuthStore = defineStore({
     },
     async login(credentials: { username: string; password: string }) {
       try {
-        const response = await axios.post("/api/users/login", credentials);
+        const response: AxiosResponse = await axios.post("/api/users/login", credentials, { timeout: 3000 });
         this.setToken(response.data.token);
       } catch (error) {
         throw error;

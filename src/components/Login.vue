@@ -18,7 +18,7 @@ let userSchema = object({
 });
 
 const handleAxiosError = (error: any) => {
-  if (error.response && error.response.status >= 400) {
+  if (error.response && error.response.status >= 400 && error.response.data.message) {
     systemMessage.value = error.response.data.message;
   } else {
     systemMessage.value = error.message;

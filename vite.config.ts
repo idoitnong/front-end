@@ -7,7 +7,9 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:3000",
+        target:
+          (process.env.NODE_ENV === "production" ? process.env.API_URL : process.env.API_URL_DEV) ||
+          "http://localhost:3000",
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },

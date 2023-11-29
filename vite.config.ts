@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 
@@ -10,6 +11,7 @@ export default defineConfig({
         target:
           (process.env.NODE_ENV === "production" ? process.env.API_URL : process.env.API_URL_DEV) ||
           "http://localhost:3000",
+        changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },

@@ -5,6 +5,8 @@ interface AuthState {
   token: string | null;
 }
 
+const API_URL = import.meta.env.VITE_API_URL || "/api";
+
 export const useAuthStore = defineStore({
   id: "auth",
   state: (): AuthState => ({
@@ -25,7 +27,10 @@ export const useAuthStore = defineStore({
     },
     async login(credentials: { username: string; password: string }) {
       try {
-        const response: AxiosResponse = await axios.post("/api/users/login", credentials, { timeout: 3000 });
+        const response: AxiosResponse = await axios.post(`${API_URL}/users/login`, credentials, {
+          withCredentials: true,
+          timeout: 3000,
+        });
         this.setToken(response.data.token);
       } catch (error) {
         throw error;
